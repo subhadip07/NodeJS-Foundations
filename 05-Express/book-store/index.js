@@ -11,6 +11,6 @@ app.use(express.json());
 app.use(loggerMiddleware);
 
 // Routes
-app.use('/book', bookRouter);
+app.use('/books', bookRouter);
 
 app.listen(PORT, () => console.log(`Http server is running on PORT ${PORT}`));
