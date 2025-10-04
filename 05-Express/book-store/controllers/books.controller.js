@@ -1,3 +1,4 @@
+require("dotenv/config");
 const booksTable = require('../models/book.model')
 const db = require("../db");
 const { eq } = require('drizzle-orm');
