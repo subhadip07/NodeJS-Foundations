@@ -1,4 +1,4 @@
-// const { error } = require('console');
+require("dotenv/config");
 const express  = require('express');
 const { loggerMiddleware } = require('./middlewares/logger');
 const bookRouter = require('./routes/book.routes')
