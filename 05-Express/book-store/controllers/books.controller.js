@@ -1,5 +1,6 @@
 require("dotenv/config");
-const booksTable = require('../models/book.model')
+const booksTable = require("../models/book.model");
+const authorsTable = require("../models/author.model");
 const db = require("../db");
 const { eq, ilike } = require('drizzle-orm');
 const { sql } = require("drizzle-orm");
@@ -30,7 +31,8 @@ exports.getBooksById = async function (req, res)
     const [book] = await db
         .select()
         .from(booksTable)
-        .where(table => eq(table.id, id))
+        .where((table) => eq(table.id, id))
+        .leftJoin(authorsTable, eq(booksTable.authorId, authorsTable.id))
         .limit(1);
 
     if (!book)

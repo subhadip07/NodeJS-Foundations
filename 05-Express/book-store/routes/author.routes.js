@@ -1,5 +1,6 @@
 const express = require("express");
 const authorsTable = require("../models/author.model");
+const booksTable = require("../models/book.model")
 const db = require("../db");
 const { eq } = require("drizzle-orm");
 
@@ -37,6 +38,15 @@ router.post("/", async (req, res) => {
         .returning({ id: authorsTable.id });
 
     return res.json({ message: "Author has been created", id: result.id });
+});
+
+router.get("/:id/books", async (req, res) => {
+    const books = await db
+        .select()
+        .from(booksTable)
+        .where(eq(booksTable.authorId, req.params.id));
+    
+    return res.json(books);
 });
 
 module.exports = router;
