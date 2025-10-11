@@ -7,9 +7,35 @@ import { randomBytes, createHmac } from 'node:crypto';
 
 const router = express.Router();
 
-router.get('/'); // Returns current logged in user
+router.patch('/', async(req, res) => {
+    const user = req.user;
 
-router.get('/signup', async(req, res) => {
+    if (!user)
+    {
+        return res.status(401).json({ error: 'You are not logged in' });
+    }
+
+    const { name } = req.body;
+    await db
+        .update(usersTable)
+        .set({ name })
+        .where((table) => eq(usersTable.id, user.id));
+
+    return res.json({ status: 'success'});
+})
+
+router.get('/', async(req, res) => {
+    const user = req.user;
+
+    if (!user)
+    {
+        return res.status(401).json({ error: 'You are not logged in' });
+    }
+
+    return res.json({ user });
+}); // Returns current logged in user
+
+router.post('/signup', async(req, res) => {
   const { name, email, password } = req.body;
 
   const [existingUser] = await db
@@ -43,7 +69,7 @@ router.get('/signup', async(req, res) => {
 });
 
 router.post('/login', async(req, res) => {
-    const { email, password } = res.body;
+    const { email, password } = req.body;
 
     const [existingUser] = await db
     .select({
