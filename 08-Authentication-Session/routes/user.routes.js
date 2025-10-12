@@ -65,6 +65,7 @@ router.post('/login', async(req, res) => {
         id: usersTable.id,
         email: usersTable.email,
         salt: usersTable.salt,
+        role: usersTable.role,
         password: usersTable.password
     })
     .from(usersTable)
@@ -102,7 +103,8 @@ router.post('/login', async(req, res) => {
     const payload = {
         id: existingUser.id,
         email: existingUser.email,
-        name: existingUser.name
+        name: existingUser.name,
+        role: existingUser.role,
     }
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
