@@ -4,17 +4,12 @@ import {usersTable, userSessions} from '../db/schema.js';
 import { eq } from 'drizzle-orm';
 import { randomBytes, createHmac } from 'node:crypto';
 import jwt from 'jsonwebtoken';
+import { ensureAuthenticated } from '../middlewares/auth.middlewares.js';
 
 const router = express.Router();
 
-router.patch('/', async(req, res) => {
-    const user = req.user;
-
-    if (!user)
-    {
-        return res.status(401).json({ error: 'You are not logged in' });
-    }
-
+router.patch('/', ensureAuthenticated, async(req, res) => {
+    
     const { name } = req.body;
     await db
         .update(usersTable)
@@ -24,13 +19,7 @@ router.patch('/', async(req, res) => {
     return res.json({ status: 'success'});
 })
 
-router.get('/', async(req, res) => {
-    const user = req.user;
-
-    if (!user)
-    {
-        return res.status(401).json({ error: 'You are not logged in' });
-    }
+router.get('/', ensureAuthenticated, async(req, res) => {
 
     return res.json({ user });
 }); // Returns current logged in user

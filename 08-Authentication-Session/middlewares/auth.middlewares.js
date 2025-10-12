@@ -29,4 +29,15 @@ export const authenticationMiddleware = async function (req, res, next)
     {
         next();
     }
-}
+};
+
+// checking for user is authenticated or not
+export const ensureAuthenticated = function (req, res, next)
+{
+    if (!req.user)
+    {
+        return res.status(401).json({ error: 'You must be authenticated' });
+    }
+
+    next();
+};
