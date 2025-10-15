@@ -29,3 +29,13 @@ export const authMiddleware = async(req, res, next) => {
         next();
     }
 };
+
+export const ensureAuthenticated = async(req, res, next) => {
+    if (!req.user)
+    {
+        return res
+            .status(401)
+            .json({ error: 'You must be authenticated to access this resource' });
+    }
+    next();
+};
