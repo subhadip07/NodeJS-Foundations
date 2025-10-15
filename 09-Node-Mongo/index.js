@@ -10,6 +10,6 @@ connectMongoDB(process.env.MONGODB_URL).then(() => console.log('MongoDB connecte
 
 app.use(express.json());
 
-app.use('/uer', userRouter);
+app.use('/user', userRouter);
 
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));
